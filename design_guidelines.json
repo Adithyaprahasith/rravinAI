@@ -1,0 +1,151 @@
+{
+  "identity": {
+    "name": "rravin",
+    "persona": "E1: The Anti-AI Designer",
+    "archetype": "The Performance Pro (Archetype 2)",
+    "tone": "Tactical, Insightful, Precision-Focused",
+    "mission": "Transform raw data into executive intelligence with zero friction."
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Manrope, sans-serif",
+      "body": "IBM Plex Sans, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900
+    },
+    "usage_rules": {
+      "headings": "Use Manrope. Tracking tight (-0.02em). Weight 700 or 900 for H1/H2.",
+      "body": "Use IBM Plex Sans. Tracking normal. High legibility for data.",
+      "overline": "Uppercase, tracking-widest (0.2em), text-xs, font-bold.",
+      "data_cells": "Use JetBrains Mono for tabular numbers to ensure alignment."
+    }
+  },
+  "colors": {
+    "theme": "dark",
+    "palette": {
+      "background": "#050505",
+      "foreground": "#FFFFFF",
+      "card": "#0A0A0A",
+      "card_foreground": "#FFFFFF",
+      "popover": "#0A0A0A",
+      "popover_foreground": "#FFFFFF",
+      "primary": "#007AFF",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#1A1A1A",
+      "secondary_foreground": "#FFFFFF",
+      "muted": "#262626",
+      "muted_foreground": "#A3A3A3",
+      "accent": "#007AFF",
+      "accent_foreground": "#FFFFFF",
+      "destructive": "#FF3B30",
+      "destructive_foreground": "#FFFFFF",
+      "border": "#262626",
+      "input": "#262626",
+      "ring": "#007AFF"
+    },
+    "chart_colors": [
+      "#007AFF",
+      "#5856D6",
+      "#AF52DE",
+      "#FF2D55",
+      "#FF9500",
+      "#FFCC00",
+      "#34C759",
+      "#00C7BE"
+    ],
+    "gradients": {
+      "hero_glow": "radial-gradient(circle at center, rgba(0, 122, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%)",
+      "beam_border": "linear-gradient(90deg, transparent, #007AFF, transparent)"
+    },
+    "rules": {
+      "no_gradients_text": "Do not use gradients on text for readability.",
+      "contrast": "Ensure 4.5:1 contrast ratio for all text.",
+      "glass": "Use bg-black/60 with backdrop-blur-xl for overlays."
+    }
+  },
+  "layout": {
+    "spacing_scale": [
+      "p-1", "p-2", "p-4", "p-6", "p-8", "p-12", "p-16", "p-20", "p-24", "p-32"
+    ],
+    "container_padding": "px-6 md:px-12 lg:px-24",
+    "grids": {
+      "dashboard": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+      "landing": "grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8"
+    },
+    "strategies": {
+      "bento_grid": "Use for dashboard. Mix col-span-1, col-span-2, and row-span-2 items.",
+      "f_pattern": "Place key metrics top-left. Navigation on left sidebar.",
+      "density": "High density for data views. Use h-full to stretch cards."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-white hover:bg-primary/90 rounded-md shadow-[0_0_15px_rgba(0,122,255,0.3)] transition-all",
+      "secondary": "bg-secondary text-white hover:bg-secondary/80 rounded-md border border-white/10",
+      "ghost": "hover:bg-white/5 text-muted-foreground hover:text-white"
+    },
+    "cards": {
+      "default": "bg-card border border-border rounded-xl shadow-sm",
+      "glass": "bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl",
+      "interactive": "hover:border-primary/50 transition-colors cursor-pointer"
+    },
+    "inputs": {
+      "style": "bg-secondary border-border focus:border-primary focus:ring-1 focus:ring-primary rounded-md h-10"
+    },
+    "visual_enhancers": {
+      "tracing_beam": "Use for the file upload container to signal 'active' state.",
+      "grid_borders": "Use for data tables. border-r border-b border-white/5.",
+      "noise": "Add a subtle noise texture overlay to the background (opacity 0.03)."
+    }
+  },
+  "motion": {
+    "transitions": "transition-all duration-200 ease-out",
+    "hover": "scale-[1.01] -translate-y-0.5",
+    "entrance": {
+      "initial": { "opacity": 0, "y": 10 },
+      "animate": { "opacity": 1, "y": 0 },
+      "transition": { "duration": 0.4 }
+    }
+  },
+  "accessibility": {
+    "contrast": "Strict adherence to APCA/WCAG AA.",
+    "focus_states": "Visible ring-2 ring-primary ring-offset-2 ring-offset-background.",
+    "reduced_motion": "Respect prefers-reduced-motion media query.",
+    "aria": "Use aria-labels for icon-only buttons."
+  },
+  "image_urls": {
+    "hero_abstract": "https://images.pexels.com/photos/27277185/pexels-photo-27277185.jpeg",
+    "data_viz_bg": "https://images.pexels.com/photos/18545023/pexels-photo-18545023.jpeg",
+    "logo_placeholder_1": "https://images.pexels.com/photos/9949426/pexels-photo-9949426.jpeg",
+    "logo_placeholder_2": "https://images.pexels.com/photos/10142683/pexels-photo-10142683.jpeg"
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Add Manrope and IBM Plex Sans via Google Fonts or Fontsource.",
+    "2. CONFIGURE TAILWIND: Update tailwind.config.js with the colors and font families defined above.",
+    "3. OVERRIDE SHADCN: Update /src/components/ui files to remove default 'zinc' styles and apply the 'Performance Pro' palette.",
+    "4. BUILD LAYOUT: Create a Layout component that handles the sidebar and main content area with the 'F-Pattern'.",
+    "5. IMPLEMENT CHARTS: Use Recharts. Ensure tooltips have high contrast (dark bg, white text).",
+    "6. FILE UPLOAD: Build the file upload area with the 'Tracing Beam' effect.",
+    "7. DATA-TESTID: Add data-testid to ALL interactive elements (buttons, inputs, cards).",
+    "8. NO TRANSPARENT BG: Ensure dropdowns and modals have solid or blurred backgrounds, never transparent."
+  ],
+  "universal_guidelines": [
+    "Do not use generic centered layouts.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "You MUST NOT apply universal transition. Eg: transition: all.",
+    "You MUST NOT center align the app container.",
+    "Always use modern button styles.",
+    "NEVER use AI assistant Emoji characters.",
+    "Every interaction needs micro-animations.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Subtle grain textures and noise overlays are recommended.",
+    "Use sonner for toasts."
+  ]
+}

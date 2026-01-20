@@ -1,53 +1,96 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Toaster, toast } from "sonner";
+
+// Components
+import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+export const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
+// Session context
+export const useSession = () => {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const initSession = useCallback(async () => {
     try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      const storedSessionId = localStorage.getItem("rravin_session_id");
+      const response = await axios.post(`${API}/sessions`, {
+        session_id: storedSessionId || null,
+      });
+      setSession(response.data);
+      localStorage.setItem("rravin_session_id", response.data.session_id);
+    } catch (error) {
+      console.error("Session error:", error);
+      toast.error("Failed to initialize session");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
   }, []);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+  const refreshSession = useCallback(async () => {
+    if (!session?.session_id) return;
+    try {
+      const response = await axios.get(`${API}/sessions/${session.session_id}`);
+      setSession(response.data);
+    } catch (error) {
+      console.error("Refresh error:", error);
+    }
+  }, [session?.session_id]);
+
+  const resetSession = useCallback(async () => {
+    if (session?.session_id) {
+      try {
+        await axios.delete(`${API}/sessions/${session.session_id}`);
+      } catch (error) {
+        console.error("Delete error:", error);
+      }
+    }
+    localStorage.removeItem("rravin_session_id");
+    setSession(null);
+    await initSession();
+  }, [session?.session_id, initSession]);
+
+  useEffect(() => {
+    initSession();
+  }, [initSession]);
+
+  return { session, loading, refreshSession, resetSession, setSession };
 };
 
 function App() {
   return (
-    <div className="App">
+    <div className="min-h-screen bg-background">
+      <div className="noise-overlay" />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#0A0A0A",
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "#fff",
+          },
+        }}
+      />
     </div>
+  );
+}
+
+function AppRoutes() {
+  const sessionData = useSession();
+
+  return (
+    <Routes>
+      <Route path="/" element={<Landing {...sessionData} />} />
+      <Route path="/dashboard" element={<Dashboard {...sessionData} />} />
+    </Routes>
   );
 }
 

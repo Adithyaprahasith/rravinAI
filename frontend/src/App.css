@@ -1,34 +1,182 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
+/* Main app styles */
+.app-container {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    background-color: #050505;
 }
 
-.App-link {
-    color: #61dafb;
+/* Logo styling */
+.logo-text {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
+/* Overline text */
+.overline {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Section headers */
+.section-header {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+/* Data cells with monospace */
+.data-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Custom focus states */
+.focus-ring:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-hover:hover {
+    border-color: hsl(var(--primary) / 0.5);
+}
+
+/* Interactive elements */
+.interactive {
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.interactive:hover {
+    opacity: 0.9;
+}
+
+.interactive:active {
+    transform: scale(0.98);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #AF52DE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Status indicators */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.success {
+    background-color: #34C759;
+    box-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
+}
+
+.status-dot.warning {
+    background-color: #FF9500;
+    box-shadow: 0 0 8px rgba(255, 149, 0, 0.5);
+}
+
+.status-dot.error {
+    background-color: #FF3B30;
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.5);
+}
+
+/* Loading spinner */
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #007AFF;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Progress bar */
+.progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007AFF, #5856D6);
+    transition: width 0.3s ease;
+}
+
+/* Markdown content styling */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.markdown-content p {
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+}
+
+.markdown-content li {
+    margin-bottom: 0.5em;
+}
+
+.markdown-content code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Recharts customization */
+.recharts-cartesian-axis-tick-value {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    fill: hsl(var(--muted-foreground));
+}
+
+.recharts-legend-item-text {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: hsl(var(--foreground)) !important;
+}
+
+.recharts-default-tooltip {
+    background: #0A0A0A !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

@@ -1,0 +1,516 @@
+{
+  "timestamp": "2026-01-20T19:04:06.982069",
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "success_rate": "100.0%"
+  },
+  "session_id": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+  "analysis_id": "3ad17424-5c50-4630-960c-9cd0560b72e9",
+  "test_results": [
+    {
+      "test": "API Root Endpoint",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "message": "rravin API - AI Data Analysis Agent"
+      }
+    },
+    {
+      "test": "Create Session",
+      "success": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+      "details": "Session ID: b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+      "response_data": {
+        "session_id": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+        "files_uploaded": 0,
+        "max_files": 3,
+        "created_at": "2026-01-20T19:03:28.401601+00:00",
+        "analyses": []
+      }
+    },
+    {
+      "test": "Get Session",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "session_id": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+        "files_uploaded": 0,
+        "max_files": 3,
+        "created_at": "2026-01-20T19:03:28.401601+00:00",
+        "analyses": []
+      }
+    },
+    {
+      "test": "File Upload",
+      "success": true,
+      "details": "Uploaded 1 file(s)",
+      "response_data": {
+        "message": "Successfully uploaded 1 file(s)",
+        "files": [
+          {
+            "file_id": "35fbff69-06c2-42db-864c-95b775091033",
+            "original_name": "test_data.csv",
+            "path": "/app/backend/uploads/35fbff69-06c2-42db-864c-95b775091033.csv",
+            "rows": 10,
+            "columns": 4,
+            "column_names": [
+              "Date",
+              "Revenue",
+              "Customers",
+              "Region"
+            ],
+            "uploaded_at": "2026-01-20T19:03:28.542897+00:00"
+          }
+        ],
+        "total_files": 1,
+        "remaining_uploads": 2
+      }
+    },
+    {
+      "test": "Data Analysis",
+      "success": "3ad17424-5c50-4630-960c-9cd0560b72e9",
+      "details": "Analysis ID: 3ad17424-5c50-4630-960c-9cd0560b72e9",
+      "response_data": {
+        "analysis_id": "3ad17424-5c50-4630-960c-9cd0560b72e9",
+        "session_id": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+        "summary": "This report provides an analysis of sales data for a brief 10-day period, from January 1st to January 10th, 2024, focusing on revenue trends and customer patterns. During this timeframe, the total revenue generated across all regions was $109,500, with an average daily revenue of $10,950 and an average of 159.5 customers per day. The data indicates a notable fluctuation in daily sales performance, ranging from a low of $7,000 to a high of $15,000, accompanied by similar variability in customer counts.\n\nRegional performance exhibits significant disparities, with the North region being the primary revenue driver, contributing nearly half of the total sales. In contrast, the South region recorded the lowest revenue and customer engagement. The average revenue per customer remained relatively stable across the days, suggesting consistent spending behavior among patrons, despite the fluctuating daily traffic. This implies that while customer volume varies, the value of each customer transaction is fairly consistent.\n\nOverall, the dataset offers a snapshot of recent operational activity, highlighting strong performance in certain geographical areas while identifying others as potential areas for improvement. The limited data duration, however, restricts the ability to discern long-term trends or seasonal impacts, emphasizing the need for more extensive data collection to inform robust strategic decisions.",
+        "key_metrics": [
+          {
+            "name": "Total Revenue (10 Days)",
+            "value": "$109,500",
+            "change": "N/A",
+            "trend": "Variable",
+            "description": "The cumulative revenue across all regions over the analyzed 10-day period."
+          },
+          {
+            "name": "Average Daily Revenue",
+            "value": "$10,950",
+            "change": "N/A",
+            "trend": "Fluctuating",
+            "description": "The average revenue generated per day, reflecting daily sales volatility."
+          },
+          {
+            "name": "Average Daily Customers",
+            "value": "159.5",
+            "change": "N/A",
+            "trend": "Fluctuating",
+            "description": "The average number of customers per day, indicating daily footfall variability."
+          },
+          {
+            "name": "Average Revenue Per Customer",
+            "value": "$69",
+            "change": "N/A",
+            "trend": "Stable",
+            "description": "Average revenue generated per customer across all days, suggesting consistent spending per transaction."
+          },
+          {
+            "name": "Top Performing Region (Revenue)",
+            "value": "North ($51,000)",
+            "change": "N/A",
+            "trend": "Dominant",
+            "description": "The region contributing the highest total revenue during the period, representing 46.57% of total sales."
+          },
+          {
+            "name": "Lowest Performing Region (Revenue)",
+            "value": "South ($24,000)",
+            "change": "N/A",
+            "trend": "Underperforming",
+            "description": "The region contributing the lowest total revenue during the period, representing 21.92% of total sales."
+          }
+        ],
+        "visualizations": [
+          {
+            "type": "bar",
+            "title": "Total Revenue by Region",
+            "data": [
+              {
+                "name": "North",
+                "value": 51000
+              },
+              {
+                "name": "South",
+                "value": 24000
+              },
+              {
+                "name": "East",
+                "value": 34500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This bar chart vividly illustrates the total revenue generated by each region, clearly identifying North as the top performer and South as the lowest, highlighting regional disparities."
+          },
+          {
+            "type": "line",
+            "title": "Daily Revenue Trend",
+            "data": [
+              {
+                "name": "2024-01-01",
+                "value": 10000
+              },
+              {
+                "name": "2024-01-02",
+                "value": 12000
+              },
+              {
+                "name": "2024-01-03",
+                "value": 8000
+              },
+              {
+                "name": "2024-01-04",
+                "value": 15000
+              },
+              {
+                "name": "2024-01-05",
+                "value": 9000
+              },
+              {
+                "name": "2024-01-06",
+                "value": 11000
+              },
+              {
+                "name": "2024-01-07",
+                "value": 13000
+              },
+              {
+                "name": "2024-01-08",
+                "value": 7000
+              },
+              {
+                "name": "2024-01-09",
+                "value": 14000
+              },
+              {
+                "name": "2024-01-10",
+                "value": 10500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This line chart displays the daily revenue fluctuations over the 10-day period, revealing significant day-to-day volatility and no clear upward or downward trend."
+          },
+          {
+            "type": "line",
+            "title": "Daily Customers Trend",
+            "data": [
+              {
+                "name": "2024-01-01",
+                "value": 150
+              },
+              {
+                "name": "2024-01-02",
+                "value": 180
+              },
+              {
+                "name": "2024-01-03",
+                "value": 120
+              },
+              {
+                "name": "2024-01-04",
+                "value": 200
+              },
+              {
+                "name": "2024-01-05",
+                "value": 130
+              },
+              {
+                "name": "2024-01-06",
+                "value": 160
+              },
+              {
+                "name": "2024-01-07",
+                "value": 190
+              },
+              {
+                "name": "2024-01-08",
+                "value": 100
+              },
+              {
+                "name": "2024-01-09",
+                "value": 210
+              },
+              {
+                "name": "2024-01-10",
+                "value": 155
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This line chart tracks the daily customer count, showing a pattern of fluctuation largely mirroring the daily revenue trend, suggesting a direct correlation between customer numbers and sales."
+          },
+          {
+            "type": "pie",
+            "title": "Regional Revenue Contribution",
+            "data": [
+              {
+                "name": "North",
+                "value": 51000
+              },
+              {
+                "name": "South",
+                "value": 24000
+              },
+              {
+                "name": "East",
+                "value": 34500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This pie chart visualizes the proportional contribution of each region to the total revenue, clearly emphasizing the North region's leading share and the South region's smallest share."
+          }
+        ],
+        "problems": [
+          "Limited Data Scope: The analysis is based on only 10 days of data, which is insufficient to identify robust long-term trends, seasonality, or cyclical patterns that are crucial for strategic planning.",
+          "Significant Regional Disparity: The South region consistently underperforms compared to North and East, indicating potential underlying issues with market penetration, customer engagement, or operational efficiency specific to that area.",
+          "High Daily Volatility: Both revenue and customer numbers show considerable day-to-day fluctuations without clear external correlative factors provided, making accurate forecasting challenging and potentially signaling inconsistent operational or marketing efforts.",
+          "Lack of Granular Customer Data: Absence of customer demographics, purchase history, or segmentation prevents deeper insights into specific customer behaviors, preferences, and opportunities for personalized marketing strategies.",
+          "No Profitability Metrics: The dataset only includes revenue, making it impossible to assess the true profitability of sales operations, product lines, or regional performance after accounting for costs."
+        ],
+        "recommendations": [
+          "Expand Data Collection and Scope: Prioritize collecting more extensive historical sales data (at least 6-12 months) and integrate additional dimensions such as product categories, marketing spend, and customer demographics to enable more robust trend analysis and deeper insights.",
+          "Investigate South Region Performance: Conduct a thorough, localized analysis of the South region to understand the root causes of its lower revenue and customer numbers. This should include market research, competitor analysis, and evaluation of local marketing and sales strategies.",
+          "Analyze Daily Fluctuations for Causal Factors: Implement data tracking for external variables (e.g., weather, local events, specific marketing campaigns, day of the week) and internal operational changes to identify and mitigate drivers of daily revenue and customer volatility.",
+          "Implement Customer Segmentation and Loyalty Programs: Introduce data points for customer attributes to segment them based on purchasing behavior or demographics. Develop targeted marketing and loyalty programs to stabilize customer numbers and enhance customer lifetime value.",
+          "Introduce Cost and Profitability Tracking: Begin tracking cost of goods sold and operational expenses alongside revenue data. This will enable a comprehensive profitability analysis per product, region, or customer segment, shifting focus from pure revenue to sustainable, profitable growth."
+        ],
+        "created_at": "2026-01-20T19:04:03.821667+00:00"
+      }
+    },
+    {
+      "test": "Get Analysis",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "analysis_id": "3ad17424-5c50-4630-960c-9cd0560b72e9",
+        "session_id": "b311f4ed-38b0-450b-a1d9-40939ca2fb00",
+        "instructions": "Analyze this sales data and provide insights on revenue trends and customer patterns.",
+        "created_at": "2026-01-20T19:04:03.821667+00:00",
+        "summary": "This report provides an analysis of sales data for a brief 10-day period, from January 1st to January 10th, 2024, focusing on revenue trends and customer patterns. During this timeframe, the total revenue generated across all regions was $109,500, with an average daily revenue of $10,950 and an average of 159.5 customers per day. The data indicates a notable fluctuation in daily sales performance, ranging from a low of $7,000 to a high of $15,000, accompanied by similar variability in customer counts.\n\nRegional performance exhibits significant disparities, with the North region being the primary revenue driver, contributing nearly half of the total sales. In contrast, the South region recorded the lowest revenue and customer engagement. The average revenue per customer remained relatively stable across the days, suggesting consistent spending behavior among patrons, despite the fluctuating daily traffic. This implies that while customer volume varies, the value of each customer transaction is fairly consistent.\n\nOverall, the dataset offers a snapshot of recent operational activity, highlighting strong performance in certain geographical areas while identifying others as potential areas for improvement. The limited data duration, however, restricts the ability to discern long-term trends or seasonal impacts, emphasizing the need for more extensive data collection to inform robust strategic decisions.",
+        "key_metrics": [
+          {
+            "name": "Total Revenue (10 Days)",
+            "value": "$109,500",
+            "change": "N/A",
+            "trend": "Variable",
+            "description": "The cumulative revenue across all regions over the analyzed 10-day period."
+          },
+          {
+            "name": "Average Daily Revenue",
+            "value": "$10,950",
+            "change": "N/A",
+            "trend": "Fluctuating",
+            "description": "The average revenue generated per day, reflecting daily sales volatility."
+          },
+          {
+            "name": "Average Daily Customers",
+            "value": "159.5",
+            "change": "N/A",
+            "trend": "Fluctuating",
+            "description": "The average number of customers per day, indicating daily footfall variability."
+          },
+          {
+            "name": "Average Revenue Per Customer",
+            "value": "$69",
+            "change": "N/A",
+            "trend": "Stable",
+            "description": "Average revenue generated per customer across all days, suggesting consistent spending per transaction."
+          },
+          {
+            "name": "Top Performing Region (Revenue)",
+            "value": "North ($51,000)",
+            "change": "N/A",
+            "trend": "Dominant",
+            "description": "The region contributing the highest total revenue during the period, representing 46.57% of total sales."
+          },
+          {
+            "name": "Lowest Performing Region (Revenue)",
+            "value": "South ($24,000)",
+            "change": "N/A",
+            "trend": "Underperforming",
+            "description": "The region contributing the lowest total revenue during the period, representing 21.92% of total sales."
+          }
+        ],
+        "visualizations": [
+          {
+            "type": "bar",
+            "title": "Total Revenue by Region",
+            "data": [
+              {
+                "name": "North",
+                "value": 51000
+              },
+              {
+                "name": "South",
+                "value": 24000
+              },
+              {
+                "name": "East",
+                "value": 34500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This bar chart vividly illustrates the total revenue generated by each region, clearly identifying North as the top performer and South as the lowest, highlighting regional disparities."
+          },
+          {
+            "type": "line",
+            "title": "Daily Revenue Trend",
+            "data": [
+              {
+                "name": "2024-01-01",
+                "value": 10000
+              },
+              {
+                "name": "2024-01-02",
+                "value": 12000
+              },
+              {
+                "name": "2024-01-03",
+                "value": 8000
+              },
+              {
+                "name": "2024-01-04",
+                "value": 15000
+              },
+              {
+                "name": "2024-01-05",
+                "value": 9000
+              },
+              {
+                "name": "2024-01-06",
+                "value": 11000
+              },
+              {
+                "name": "2024-01-07",
+                "value": 13000
+              },
+              {
+                "name": "2024-01-08",
+                "value": 7000
+              },
+              {
+                "name": "2024-01-09",
+                "value": 14000
+              },
+              {
+                "name": "2024-01-10",
+                "value": 10500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This line chart displays the daily revenue fluctuations over the 10-day period, revealing significant day-to-day volatility and no clear upward or downward trend."
+          },
+          {
+            "type": "line",
+            "title": "Daily Customers Trend",
+            "data": [
+              {
+                "name": "2024-01-01",
+                "value": 150
+              },
+              {
+                "name": "2024-01-02",
+                "value": 180
+              },
+              {
+                "name": "2024-01-03",
+                "value": 120
+              },
+              {
+                "name": "2024-01-04",
+                "value": 200
+              },
+              {
+                "name": "2024-01-05",
+                "value": 130
+              },
+              {
+                "name": "2024-01-06",
+                "value": 160
+              },
+              {
+                "name": "2024-01-07",
+                "value": 190
+              },
+              {
+                "name": "2024-01-08",
+                "value": 100
+              },
+              {
+                "name": "2024-01-09",
+                "value": 210
+              },
+              {
+                "name": "2024-01-10",
+                "value": 155
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This line chart tracks the daily customer count, showing a pattern of fluctuation largely mirroring the daily revenue trend, suggesting a direct correlation between customer numbers and sales."
+          },
+          {
+            "type": "pie",
+            "title": "Regional Revenue Contribution",
+            "data": [
+              {
+                "name": "North",
+                "value": 51000
+              },
+              {
+                "name": "South",
+                "value": 24000
+              },
+              {
+                "name": "East",
+                "value": 34500
+              }
+            ],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "This pie chart visualizes the proportional contribution of each region to the total revenue, clearly emphasizing the North region's leading share and the South region's smallest share."
+          }
+        ],
+        "problems": [
+          "Limited Data Scope: The analysis is based on only 10 days of data, which is insufficient to identify robust long-term trends, seasonality, or cyclical patterns that are crucial for strategic planning.",
+          "Significant Regional Disparity: The South region consistently underperforms compared to North and East, indicating potential underlying issues with market penetration, customer engagement, or operational efficiency specific to that area.",
+          "High Daily Volatility: Both revenue and customer numbers show considerable day-to-day fluctuations without clear external correlative factors provided, making accurate forecasting challenging and potentially signaling inconsistent operational or marketing efforts.",
+          "Lack of Granular Customer Data: Absence of customer demographics, purchase history, or segmentation prevents deeper insights into specific customer behaviors, preferences, and opportunities for personalized marketing strategies.",
+          "No Profitability Metrics: The dataset only includes revenue, making it impossible to assess the true profitability of sales operations, product lines, or regional performance after accounting for costs."
+        ],
+        "recommendations": [
+          "Expand Data Collection and Scope: Prioritize collecting more extensive historical sales data (at least 6-12 months) and integrate additional dimensions such as product categories, marketing spend, and customer demographics to enable more robust trend analysis and deeper insights.",
+          "Investigate South Region Performance: Conduct a thorough, localized analysis of the South region to understand the root causes of its lower revenue and customer numbers. This should include market research, competitor analysis, and evaluation of local marketing and sales strategies.",
+          "Analyze Daily Fluctuations for Causal Factors: Implement data tracking for external variables (e.g., weather, local events, specific marketing campaigns, day of the week) and internal operational changes to identify and mitigate drivers of daily revenue and customer volatility.",
+          "Implement Customer Segmentation and Loyalty Programs: Introduce data points for customer attributes to segment them based on purchasing behavior or demographics. Develop targeted marketing and loyalty programs to stabilize customer numbers and enhance customer lifetime value.",
+          "Introduce Cost and Profitability Tracking: Begin tracking cost of goods sold and operational expenses alongside revenue data. This will enable a comprehensive profitability analysis per product, region, or customer segment, shifting focus from pure revenue to sustainable, profitable growth."
+        ]
+      }
+    },
+    {
+      "test": "Chat Functionality",
+      "success": true,
+      "details": "Chat response received",
+      "response_data": {
+        "response": "Based on the 10-day sales data from January 1st to January 10th, 2024, here are the main trends observed:\n\n1.  **Significant Daily Volatility in Sales and Customers:** Both daily revenue and customer counts show considerable fluctuations. Revenue ranged from a low of **$7,000** to a high of **$15,000**, and customer numbers varied similarly. This suggests inconsistency in daily performance.\n2.  **Strong Regional Disparity, with North as the Dominant Performer:** The **North** region is clearly the primary revenue driver, contributing **$51,000**, which is nearly half (46.57%) of the total revenue. In stark contrast, the **South** region significantly underperforms, recording the lowest revenue at **$24,000** (21.92% of total sales). The East region falls in between.\n3.  **Stable Average Revenue Per Customer:** Despite the fluctuations in daily customer volume and overall revenue, the **Average Revenue Per Customer** remained relatively stable at **$69**. This indicates that while the number of customers varies day-to-day, the average spending behavior of each customer is consistent.\n4.  **Limited Long-Term Trend Insight:** It's crucial to note that due to the very short 10-day period, the data **does not reveal any long-term trends, seasonality, or cyclical patterns.** The observations are a snapshot of immediate performance.",
+        "timestamp": "2026-01-20T19:04:06.933422+00:00"
+      }
+    },
+    {
+      "test": "Chat History",
+      "success": true,
+      "details": "History entries: 1",
+      "response_data": {
+        "history": [
+          {
+            "user_message": "What are the main trends in this data?",
+            "ai_response": "Based on the 10-day sales data from January 1st to January 10th, 2024, here are the main trends observed:\n\n1.  **Significant Daily Volatility in Sales and Customers:** Both daily revenue and customer counts show considerable fluctuations. Revenue ranged from a low of **$7,000** to a high of **$15,000**, and customer numbers varied similarly. This suggests inconsistency in daily performance.\n2.  **Strong Regional Disparity, with North as the Dominant Performer:** The **North** region is clearly the primary revenue driver, contributing **$51,000**, which is nearly half (46.57%) of the total revenue. In stark contrast, the **South** region significantly underperforms, recording the lowest revenue at **$24,000** (21.92% of total sales). The East region falls in between.\n3.  **Stable Average Revenue Per Customer:** Despite the fluctuations in daily customer volume and overall revenue, the **Average Revenue Per Customer** remained relatively stable at **$69**. This indicates that while the number of customers varies day-to-day, the average spending behavior of each customer is consistent.\n4.  **Limited Long-Term Trend Insight:** It's crucial to note that due to the very short 10-day period, the data **does not reveal any long-term trends, seasonality, or cyclical patterns.** The observations are a snapshot of immediate performance.",
+            "timestamp": "2026-01-20T19:04:06.933422+00:00"
+          }
+        ]
+      }
+    }
+  ]
+}

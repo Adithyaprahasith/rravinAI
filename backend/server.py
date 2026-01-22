@@ -118,7 +118,7 @@ async def analyze_with_llm(file_paths: List[str], instructions: Optional[str] = 
     # Build analysis prompt
     base_instructions = instructions or "Perform a comprehensive data analysis"
     
-    analysis_prompt = f"""You are rravin, an expert AI data analyst. Analyze the following dataset(s) and provide a comprehensive report.
+    analysis_prompt = f"""You are rravin, an expert AI data analyst and business intelligence consultant. Analyze the following dataset(s) and provide a comprehensive Tableau-style dashboard report.
 
 {base_instructions}
 
@@ -127,24 +127,63 @@ DATA:
 
 Respond with a JSON object containing these exact keys:
 {{
-    "summary": "A clear 2-3 paragraph executive summary of the data and key findings",
+    "summary": "A clear 3-4 paragraph executive summary covering: 1) What the data represents, 2) Key findings and patterns, 3) Business implications, 4) Overall data quality assessment",
     "key_metrics": [
-        {{"name": "Metric Name", "value": "Value", "change": "+/-X%", "trend": "up/down/stable", "description": "Brief description"}}
+        {{
+            "name": "Metric Name",
+            "value": "Formatted Value (e.g., $1.2M, 85%, 1,234)",
+            "change": "+/-X% or +/-Value",
+            "trend": "up/down/stable",
+            "interpretation": "What this metric means in business context and why it matters. Include comparison to benchmarks if applicable.",
+            "category": "financial/operational/performance/quality"
+        }}
     ],
     "visualizations": [
-        {{"type": "bar/line/pie/area", "title": "Chart Title", "data": [{{"name": "Label", "value": 100}}], "xKey": "name", "yKey": "value", "description": "What this chart shows"}}
+        {{
+            "type": "bar/line/pie/area/composed",
+            "title": "Descriptive Chart Title",
+            "data": [{{"name": "Label", "value": 100}}],
+            "xKey": "name",
+            "yKey": "value",
+            "description": "Insight this chart reveals about the data"
+        }}
     ],
-    "problems": ["List of identified issues or anomalies in the data"],
-    "recommendations": ["Actionable recommendations based on the analysis"],
-    "executive_report": "A formal executive report suitable for stakeholders (3-5 paragraphs)"
+    "problems": ["Specific issue with data-driven evidence and potential impact"],
+    "recommendations": ["Prioritized actionable recommendation with expected outcome"],
+    "executive_report": "A detailed 5-7 paragraph executive report covering: Introduction, Data Overview, Key Findings, Trend Analysis, Risk Assessment, Strategic Recommendations, and Conclusion. Write in a professional tone suitable for C-level executives.",
+    "statistical_summary": {{
+        "total_records": "N",
+        "date_range": "Start - End or N/A",
+        "data_completeness": "X%",
+        "key_correlations": "Brief description"
+    }}
 }}
 
-Ensure:
-1. Key metrics include at least 4-6 important metrics with realistic values from the data
-2. Visualizations include at least 3-4 different chart types with actual data points
-3. Problems are specific and data-driven
-4. Recommendations are actionable and prioritized
-5. Executive report is professional and insightful"""
+CRITICAL REQUIREMENTS:
+1. Generate 8-12 comprehensive metrics covering different aspects:
+   - Financial metrics (revenue, costs, margins, growth rates)
+   - Operational metrics (volumes, counts, averages)
+   - Performance metrics (conversion rates, efficiency ratios)
+   - Quality metrics (error rates, completion rates)
+   - Statistical metrics (mean, median, std deviation for key columns)
+   
+2. Each metric MUST include an "interpretation" field explaining:
+   - What the number means in plain English
+   - Whether it's good/bad/neutral
+   - What actions it might suggest
+   
+3. Generate 5-6 diverse visualizations:
+   - At least one bar chart for comparisons
+   - At least one line chart for trends
+   - At least one pie chart for distributions
+   - At least one area chart for cumulative data
+   - Include actual data points derived from the dataset
+   
+4. Problems should be specific with evidence (e.g., "Revenue dropped 15% in Q3" not just "Revenue issues")
+   
+5. Recommendations should be actionable with expected outcomes (e.g., "Implement automated follow-ups to increase conversion by estimated 10-15%")
+
+6. All numeric values in visualizations must be realistic based on the actual data provided."""
 
     try:
         chat = LlmChat(

@@ -64,8 +64,7 @@ export const useSession = () => {
 
 function App() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="noise-overlay" />
+    <div className="min-h-screen bg-slate-50">
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
@@ -73,9 +72,10 @@ function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: "#0A0A0A",
-            border: "1px solid rgba(255,255,255,0.1)",
-            color: "#fff",
+            background: "#ffffff",
+            border: "1px solid #e2e8f0",
+            color: "#0f172a",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
           },
         }}
       />

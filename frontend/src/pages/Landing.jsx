@@ -249,7 +249,7 @@ export default function Landing({ session, loading, refreshSession }) {
                       Drop files here or click to upload
                     </p>
                     <p className="text-sm text-slate-500">
-                      CSV or Excel files (max 3 for free tier)
+                      CSV or Excel files • Upload as many as you need
                     </p>
                   </label>
                 </div>

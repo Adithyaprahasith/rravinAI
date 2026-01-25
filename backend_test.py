@@ -288,6 +288,78 @@ class RravinAPITester:
             self.log_test("Chat History", False, f"Error: {str(e)}")
             return False
 
+    def test_pdf_download(self):
+        """Test PDF report generation and download"""
+        if not self.analysis_id:
+            self.log_test("PDF Download", False, "No analysis ID available")
+            return False
+            
+        try:
+            response = requests.get(f"{self.api_url}/analyses/{self.analysis_id}/pdf", timeout=30)
+            success = response.status_code == 200
+            
+            if success:
+                # Check if response is actually a PDF
+                content_type = response.headers.get('content-type', '')
+                is_pdf = 'application/pdf' in content_type
+                has_content = len(response.content) > 1000  # PDF should be substantial
+                success = is_pdf and has_content
+                
+            self.log_test(
+                "PDF Download", 
+                success, 
+                f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type', 'N/A')}, Size: {len(response.content)} bytes" if not success else f"PDF generated successfully ({len(response.content)} bytes)",
+                {"content_type": response.headers.get('content-type'), "size_bytes": len(response.content)}
+            )
+            return success
+        except Exception as e:
+            self.log_test("PDF Download", False, f"Error: {str(e)}")
+            return False
+
+    def test_unlimited_file_upload(self):
+        """Test unlimited file upload (no 3-file limit)"""
+        if not self.session_id:
+            self.log_test("Unlimited File Upload", False, "No session ID available")
+            return False
+            
+        try:
+            # Create multiple test CSV files (more than 3 to test no limit)
+            files_data = []
+            for i in range(5):  # Test with 5 files
+                csv_content = f"""Date,Revenue,Customers,Region
+2024-0{i+1}-01,{10000+i*1000},{150+i*10},North
+2024-0{i+1}-02,{12000+i*1000},{180+i*10},South
+2024-0{i+1}-03,{8000+i*1000},{120+i*10},East"""
+                files_data.append(('files', (f'test_data_{i+1}.csv', csv_content, 'text/csv')))
+            
+            data = {'session_id': self.session_id}
+            
+            response = requests.post(
+                f"{self.api_url}/upload",
+                files=files_data,
+                data=data,
+                timeout=30
+            )
+            
+            success = response.status_code == 200
+            response_data = response.json() if success else {}
+            
+            if success:
+                # Check if all 5 files were uploaded (no limit)
+                uploaded_count = len(response_data.get('files', []))
+                success = uploaded_count == 5
+                
+            self.log_test(
+                "Unlimited File Upload", 
+                success, 
+                f"Status: {response.status_code}" if not success else f"Successfully uploaded {response_data.get('total_files', 0)} files (no limit enforced)",
+                response_data
+            )
+            return success
+        except Exception as e:
+            self.log_test("Unlimited File Upload", False, f"Error: {str(e)}")
+            return False
+
     def test_session_deletion(self):
         """Test session deletion (cleanup)"""
         if not self.session_id:

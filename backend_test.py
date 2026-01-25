@@ -393,8 +393,10 @@ class RravinAPITester:
             self.test_create_session,
             self.test_get_session,
             self.test_file_upload,
+            self.test_unlimited_file_upload,  # Test new unlimited upload feature
             self.test_data_analysis,
             self.test_get_analysis,
+            self.test_pdf_download,  # Test new PDF download feature
             self.test_chat_functionality,
             self.test_chat_history,
             # self.test_session_deletion  # Skip cleanup for now to allow frontend testing

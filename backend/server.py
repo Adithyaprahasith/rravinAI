@@ -273,7 +273,6 @@ async def create_or_get_session(session_data: SessionCreate):
     new_session = {
         "session_id": session_id,
         "files_uploaded": 0,
-        "max_files": 3,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "files": [],
         "analyses": [],

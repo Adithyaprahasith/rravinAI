@@ -497,7 +497,7 @@ def generate_chart_image(viz_data: Dict, index: int) -> io.BytesIO:
             plt.xticks(range(len(labels)), labels, rotation=45, ha='right')
             plt.grid(axis='y', alpha=0.3)
         else:  # bar chart (default)
-            bars = plt.bar(labels, values, color=colors_list[:len(values)])
+            plt.bar(labels, values, color=colors_list[:len(values)])
             plt.xticks(rotation=45, ha='right')
             plt.grid(axis='y', alpha=0.3)
     

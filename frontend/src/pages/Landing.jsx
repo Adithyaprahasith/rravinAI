@@ -172,11 +172,7 @@ export default function Landing({ session, loading, refreshSession }) {
           <span className="logo-text text-xl">rravin</span>
         </div>
         <div className="flex items-center gap-4">
-          <div className="px-3 py-1.5 bg-slate-100 rounded-full">
-            <span className="text-sm text-slate-600 font-medium">
-              {session?.max_files - (session?.files_uploaded || 0)} uploads remaining
-            </span>
-          </div>
+          <span className="text-sm text-slate-500">AI Data Analyst</span>
         </div>
       </header>
 

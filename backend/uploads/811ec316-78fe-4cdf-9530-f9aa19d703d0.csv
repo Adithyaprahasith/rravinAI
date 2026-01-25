@@ -1,0 +1,9 @@
+Name,Revenue,Region,Date
+John,10000,North,2024-01-01
+Jane,15000,South,2024-01-02
+,12000,East,2024-01-03
+Bob,8000,,2024-01-04
+Alice,20000,West,2024-01-05
+John,10000,North,2024-01-01
+Sarah,,North,2024-01-06
+Mike,18000,South,

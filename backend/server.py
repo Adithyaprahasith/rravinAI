@@ -294,19 +294,12 @@ async def upload_files(
     session_id: str = Form(...),
     files: List[UploadFile] = File(...)
 ):
-    """Upload data files (CSV or Excel)"""
+    """Upload data files (CSV or Excel) - No limit on number of files"""
     session = await db.sessions.find_one({"session_id": session_id})
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     
     current_count = session.get("files_uploaded", 0)
-    max_files = session.get("max_files", 3)
-    
-    if current_count + len(files) > max_files:
-        raise HTTPException(
-            status_code=400, 
-            detail=f"Free tier limit: {max_files} files. You have {current_count} files uploaded."
-        )
     
     uploaded_files = []
     for file in files:

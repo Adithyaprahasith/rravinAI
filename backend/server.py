@@ -327,6 +327,8 @@ CRITICAL REQUIREMENTS:
         response_text = response_text.strip()
         
         result = json.loads(response_text)
+        # Add cleaning reports to result
+        result["data_cleaning"] = all_cleaning_reports
         return result
         
     except json.JSONDecodeError as e:

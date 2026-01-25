@@ -77,11 +77,9 @@ export default function Landing({ session, loading, refreshSession }) {
       return;
     }
 
-    const remainingUploads = session.max_files - (session.files_uploaded || 0);
+    const remainingUploads = 999; // No limit
     if (files.length > remainingUploads) {
-      toast.error(
-        `Free tier limit: You can only upload ${remainingUploads} more file(s)`
-      );
+      toast.error("Too many files selected");
       return;
     }
 

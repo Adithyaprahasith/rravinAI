@@ -190,8 +190,10 @@ async def analyze_with_llm(file_paths: List[str], instructions: Optional[str] = 
     if not api_key:
         raise HTTPException(status_code=500, detail="LLM API key not configured")
     
-    # Read and combine all data
+    # Read, clean, and combine all data
     all_data = []
+    all_cleaning_reports = []
+    
     for fp in file_paths:
         try:
             if fp.endswith('.csv'):
@@ -200,12 +202,21 @@ async def analyze_with_llm(file_paths: List[str], instructions: Optional[str] = 
                 df = pd.read_excel(fp)
             else:
                 continue
+            
+            # Clean the data
+            filename = Path(fp).name
+            df_cleaned, cleaning_report = clean_dataframe(df, filename)
+            all_cleaning_reports.append(cleaning_report)
+            
+            logger.info(f"Cleaned {filename}: {cleaning_report['original_rows']} -> {cleaning_report['final_rows']} rows")
+            
             all_data.append({
-                'filename': Path(fp).name,
-                'preview': get_file_preview(df),
-                'columns': list(df.columns),
-                'shape': df.shape,
-                'df': df
+                'filename': filename,
+                'preview': get_file_preview(df_cleaned),
+                'columns': list(df_cleaned.columns),
+                'shape': df_cleaned.shape,
+                'df': df_cleaned,
+                'cleaning_report': cleaning_report
             })
         except Exception as e:
             logger.error(f"Error reading file {fp}: {e}")

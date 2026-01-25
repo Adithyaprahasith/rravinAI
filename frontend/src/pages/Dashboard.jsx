@@ -447,7 +447,32 @@ ${new Date().toLocaleString()}
     a.download = `rravin-executive-report-${analysisId}.md`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Report downloaded!");
+    toast.success("Markdown report downloaded!");
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!analysisId) return;
+    
+    setDownloadingPdf(true);
+    try {
+      const response = await axios.get(`${API}/analyses/${analysisId}/pdf`, {
+        responseType: 'blob'
+      });
+      
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `rravin-report-${analysisId}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("PDF report downloaded!");
+    } catch (error) {
+      console.error("PDF download error:", error);
+      toast.error("Failed to generate PDF. Please try again.");
+    } finally {
+      setDownloadingPdf(false);
+    }
   };
 
   if (loading || loadingAnalysis) {

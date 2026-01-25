@@ -511,7 +511,6 @@ async def analyze_data(request: AnalyzeRequest):
             "$set": {"chat_history": []}  # Clear chat history for new analysis
         }
     )
-    )
     
     return AnalysisResponse(**{k: v for k, v in analysis_doc.items() if k != '_id'})
 

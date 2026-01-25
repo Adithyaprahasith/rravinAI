@@ -353,8 +353,7 @@ async def upload_files(
     return {
         "message": f"Successfully uploaded {len(uploaded_files)} file(s)",
         "files": uploaded_files,
-        "total_files": current_count + len(uploaded_files),
-        "remaining_uploads": max_files - (current_count + len(uploaded_files))
+        "total_files": current_count + len(uploaded_files)
     }
 
 @api_router.post("/analyze", response_model=AnalysisResponse)

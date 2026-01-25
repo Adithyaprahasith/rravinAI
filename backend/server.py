@@ -230,6 +230,12 @@ async def analyze_with_llm(file_paths: List[str], instructions: Optional[str] = 
         f"=== FILE: {d['filename']} ===\n{d['preview']}" for d in all_data
     ])
     
+    # Prepare cleaning summary
+    cleaning_summary = "\n".join([
+        f"File '{r['filename']}': {r['original_rows']} rows -> {r['final_rows']} rows ({r['rows_removed']} removed), Quality Score: {r['data_quality_score']}%\nActions: {', '.join(r['actions_taken'])}"
+        for r in all_cleaning_reports
+    ])
+    
     # Build analysis prompt
     base_instructions = instructions or "Perform a comprehensive data analysis"
     
@@ -237,7 +243,10 @@ async def analyze_with_llm(file_paths: List[str], instructions: Optional[str] = 
 
 {base_instructions}
 
-DATA:
+DATA CLEANING PERFORMED:
+{cleaning_summary}
+
+CLEANED DATA:
 {data_context}
 
 Respond with a JSON object containing these exact keys:

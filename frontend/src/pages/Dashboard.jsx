@@ -59,6 +59,7 @@ import {
   LayoutDashboard,
   Table2,
   LineChart as LineChartIcon,
+  FileDown,
 } from "lucide-react";
 
 // Light mode chart colors

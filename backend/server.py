@@ -60,7 +60,6 @@ class SessionResponse(BaseModel):
     model_config = ConfigDict(extra="ignore")
     session_id: str
     files_uploaded: int
-    max_files: int = 3
     created_at: str
     analyses: List[Dict[str, Any]] = []
 

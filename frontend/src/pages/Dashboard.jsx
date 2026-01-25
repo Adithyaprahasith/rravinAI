@@ -796,12 +796,22 @@ ${new Date().toLocaleString()}
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={handleDownloadReport}
+                  onClick={handleDownloadPdf}
+                  disabled={downloadingPdf}
                   className="border-slate-200"
-                  data-testid="download-report-inline"
+                  data-testid="download-pdf-inline"
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download
+                  {downloadingPdf ? (
+                    <>
+                      <div className="spinner mr-2" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <FileDown className="w-4 h-4 mr-2" />
+                      Download PDF
+                    </>
+                  )}
                 </Button>
               </div>
 

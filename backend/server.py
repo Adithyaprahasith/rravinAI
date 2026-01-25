@@ -464,6 +464,244 @@ async def delete_session(session_id: str):
     
     return {"message": "Session deleted successfully"}
 
+
+def generate_chart_image(viz_data: Dict, index: int) -> io.BytesIO:
+    """Generate a chart image from visualization data"""
+    plt.figure(figsize=(8, 5))
+    
+    chart_type = viz_data.get("type", "bar").lower()
+    data = viz_data.get("data", [])
+    title = viz_data.get("title", f"Chart {index + 1}")
+    x_key = viz_data.get("xKey", "name")
+    y_key = viz_data.get("yKey", "value")
+    
+    if not data:
+        plt.text(0.5, 0.5, "No data available", ha='center', va='center', fontsize=14)
+        plt.axis('off')
+    else:
+        labels = [str(d.get(x_key, "")) for d in data]
+        values = [float(d.get(y_key, 0)) for d in data]
+        
+        colors_list = ['#2563eb', '#16a34a', '#7c3aed', '#ea580c', '#db2777', '#0891b2', '#ca8a04', '#dc2626']
+        
+        if chart_type == "pie":
+            plt.pie(values, labels=labels, autopct='%1.1f%%', colors=colors_list[:len(values)])
+        elif chart_type == "line":
+            plt.plot(labels, values, marker='o', linewidth=2, markersize=8, color='#2563eb')
+            plt.fill_between(range(len(labels)), values, alpha=0.2, color='#2563eb')
+            plt.xticks(rotation=45, ha='right')
+            plt.grid(axis='y', alpha=0.3)
+        elif chart_type == "area":
+            plt.fill_between(range(len(labels)), values, alpha=0.4, color='#2563eb')
+            plt.plot(range(len(labels)), values, linewidth=2, color='#2563eb')
+            plt.xticks(range(len(labels)), labels, rotation=45, ha='right')
+            plt.grid(axis='y', alpha=0.3)
+        else:  # bar chart (default)
+            bars = plt.bar(labels, values, color=colors_list[:len(values)])
+            plt.xticks(rotation=45, ha='right')
+            plt.grid(axis='y', alpha=0.3)
+    
+    plt.title(title, fontsize=14, fontweight='bold', pad=15)
+    plt.tight_layout()
+    
+    img_buffer = io.BytesIO()
+    plt.savefig(img_buffer, format='png', dpi=150, bbox_inches='tight', facecolor='white')
+    plt.close()
+    img_buffer.seek(0)
+    
+    return img_buffer
+
+
+@api_router.get("/analyses/{analysis_id}/pdf")
+async def generate_pdf_report(analysis_id: str):
+    """Generate a PDF report with summary, metrics, charts, and recommendations"""
+    analysis = await db.analyses.find_one({"analysis_id": analysis_id}, {"_id": 0})
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+    
+    # Create PDF buffer
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=50,
+        leftMargin=50,
+        topMargin=50,
+        bottomMargin=50
+    )
+    
+    # Styles
+    styles = getSampleStyleSheet()
+    
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=24,
+        spaceAfter=30,
+        textColor=colors.HexColor('#0f172a'),
+        alignment=TA_CENTER
+    )
+    
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontSize=16,
+        spaceBefore=20,
+        spaceAfter=10,
+        textColor=colors.HexColor('#1e40af'),
+        borderPadding=5
+    )
+    
+    subheading_style = ParagraphStyle(
+        'CustomSubheading',
+        parent=styles['Heading3'],
+        fontSize=12,
+        spaceBefore=15,
+        spaceAfter=8,
+        textColor=colors.HexColor('#374151')
+    )
+    
+    body_style = ParagraphStyle(
+        'CustomBody',
+        parent=styles['Normal'],
+        fontSize=10,
+        spaceAfter=10,
+        alignment=TA_JUSTIFY,
+        leading=14
+    )
+    
+    metric_name_style = ParagraphStyle(
+        'MetricName',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.HexColor('#64748b')
+    )
+    
+    metric_value_style = ParagraphStyle(
+        'MetricValue',
+        parent=styles['Normal'],
+        fontSize=14,
+        fontName='Helvetica-Bold',
+        textColor=colors.HexColor('#0f172a')
+    )
+    
+    # Build content
+    content = []
+    
+    # Title
+    content.append(Paragraph("rravin Analysis Report", title_style))
+    content.append(Paragraph(f"Generated on {datetime.now().strftime('%B %d, %Y at %H:%M')}", 
+                             ParagraphStyle('Date', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.grey)))
+    content.append(Spacer(1, 30))
+    
+    # Executive Summary
+    content.append(Paragraph("Executive Summary", heading_style))
+    summary_text = analysis.get("summary", "No summary available.")
+    for para in summary_text.split('\n\n'):
+        if para.strip():
+            content.append(Paragraph(para.strip(), body_style))
+    content.append(Spacer(1, 20))
+    
+    # Key Metrics
+    content.append(Paragraph("Key Performance Indicators", heading_style))
+    metrics = analysis.get("key_metrics", [])
+    
+    if metrics:
+        # Create metrics table
+        metric_data = []
+        for i in range(0, len(metrics), 2):
+            row = []
+            for j in range(2):
+                if i + j < len(metrics):
+                    m = metrics[i + j]
+                    cell_content = f"<b>{m.get('name', 'N/A')}</b><br/><font size='14'>{m.get('value', 'N/A')}</font>"
+                    if m.get('change'):
+                        change_color = '#16a34a' if '+' in str(m.get('change', '')) else '#dc2626'
+                        cell_content += f"<br/><font color='{change_color}'>{m.get('change')}</font>"
+                    if m.get('interpretation'):
+                        cell_content += f"<br/><font size='8' color='#64748b'>{m.get('interpretation', '')[:100]}...</font>"
+                    row.append(Paragraph(cell_content, body_style))
+                else:
+                    row.append("")
+            metric_data.append(row)
+        
+        if metric_data:
+            metrics_table = Table(metric_data, colWidths=[250, 250])
+            metrics_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f8fafc')),
+                ('BOX', (0, 0), (-1, -1), 1, colors.HexColor('#e2e8f0')),
+                ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e2e8f0')),
+                ('PADDING', (0, 0), (-1, -1), 12),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ]))
+            content.append(metrics_table)
+    
+    content.append(Spacer(1, 20))
+    
+    # Visualizations
+    content.append(Paragraph("Data Visualizations", heading_style))
+    visualizations = analysis.get("visualizations", [])
+    
+    for i, viz in enumerate(visualizations[:6]):  # Limit to 6 charts
+        try:
+            img_buffer = generate_chart_image(viz, i)
+            img = Image(img_buffer, width=450, height=280)
+            content.append(img)
+            
+            if viz.get("description"):
+                content.append(Paragraph(f"<i>{viz.get('description')}</i>", 
+                    ParagraphStyle('ChartDesc', parent=body_style, fontSize=9, textColor=colors.grey, alignment=TA_CENTER)))
+            content.append(Spacer(1, 15))
+        except Exception as e:
+            logger.error(f"Error generating chart {i}: {e}")
+            content.append(Paragraph(f"Chart: {viz.get('title', 'Untitled')} (Error generating image)", body_style))
+    
+    # Page break before detailed sections
+    content.append(PageBreak())
+    
+    # Issues Identified
+    content.append(Paragraph("Issues & Anomalies Identified", heading_style))
+    problems = analysis.get("problems", [])
+    if problems:
+        for i, problem in enumerate(problems, 1):
+            content.append(Paragraph(f"<b>{i}.</b> {problem}", body_style))
+    else:
+        content.append(Paragraph("No significant issues identified.", body_style))
+    content.append(Spacer(1, 20))
+    
+    # Recommendations
+    content.append(Paragraph("Strategic Recommendations", heading_style))
+    recommendations = analysis.get("recommendations", [])
+    if recommendations:
+        for i, rec in enumerate(recommendations, 1):
+            content.append(Paragraph(f"<b>{i}.</b> {rec}", body_style))
+    else:
+        content.append(Paragraph("No recommendations available.", body_style))
+    content.append(Spacer(1, 20))
+    
+    # Full Executive Report
+    content.append(Paragraph("Detailed Executive Report", heading_style))
+    exec_report = analysis.get("executive_report", "No detailed report available.")
+    for para in exec_report.split('\n\n'):
+        if para.strip():
+            content.append(Paragraph(para.strip(), body_style))
+    
+    # Footer
+    content.append(Spacer(1, 40))
+    content.append(Paragraph("─" * 80, ParagraphStyle('Line', parent=styles['Normal'], textColor=colors.lightgrey)))
+    content.append(Paragraph("Generated by rravin AI Data Analyst", 
+        ParagraphStyle('Footer', parent=styles['Normal'], fontSize=9, textColor=colors.grey, alignment=TA_CENTER)))
+    
+    # Build PDF
+    doc.build(content)
+    buffer.seek(0)
+    
+    return StreamingResponse(
+        buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=rravin-report-{analysis_id}.pdf"}
+    )
+
 # Include the router in the main app
 app.include_router(api_router)
 

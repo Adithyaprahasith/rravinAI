@@ -84,6 +84,99 @@ class AnalysisResponse(BaseModel):
     created_at: str
 
 # Helper functions
+def clean_dataframe(df: pd.DataFrame, filename: str) -> tuple[pd.DataFrame, Dict[str, Any]]:
+    """Clean dataframe by removing errors, nulls, duplicates, etc."""
+    cleaning_report = {
+        "filename": filename,
+        "original_rows": len(df),
+        "original_columns": len(df.columns),
+        "issues_found": [],
+        "actions_taken": []
+    }
+    
+    # 1. Remove completely empty rows
+    empty_rows = df.isna().all(axis=1).sum()
+    if empty_rows > 0:
+        df = df.dropna(how='all')
+        cleaning_report["issues_found"].append(f"{empty_rows} completely empty rows")
+        cleaning_report["actions_taken"].append(f"Removed {empty_rows} empty rows")
+    
+    # 2. Remove completely empty columns
+    empty_cols = df.isna().all(axis=0).sum()
+    if empty_cols > 0:
+        empty_col_names = df.columns[df.isna().all()].tolist()
+        df = df.dropna(axis=1, how='all')
+        cleaning_report["issues_found"].append(f"{empty_cols} empty columns: {empty_col_names}")
+        cleaning_report["actions_taken"].append(f"Removed {empty_cols} empty columns")
+    
+    # 3. Handle null values - fill or remove based on column type
+    null_counts = df.isnull().sum()
+    cols_with_nulls = null_counts[null_counts > 0]
+    
+    if len(cols_with_nulls) > 0:
+        for col in cols_with_nulls.index:
+            null_count = cols_with_nulls[col]
+            null_pct = (null_count / len(df)) * 100
+            
+            if null_pct > 50:
+                # If more than 50% null, drop the column
+                df = df.drop(columns=[col])
+                cleaning_report["issues_found"].append(f"Column '{col}' had {null_pct:.1f}% null values")
+                cleaning_report["actions_taken"].append(f"Removed column '{col}' (>{50}% nulls)")
+            elif pd.api.types.is_numeric_dtype(df[col]):
+                # For numeric columns, fill with median
+                median_val = df[col].median()
+                df[col] = df[col].fillna(median_val)
+                cleaning_report["issues_found"].append(f"Column '{col}' had {null_count} null values")
+                cleaning_report["actions_taken"].append(f"Filled '{col}' nulls with median ({median_val:.2f})")
+            else:
+                # For non-numeric, fill with mode or 'Unknown'
+                mode_val = df[col].mode()
+                fill_val = mode_val[0] if len(mode_val) > 0 else 'Unknown'
+                df[col] = df[col].fillna(fill_val)
+                cleaning_report["issues_found"].append(f"Column '{col}' had {null_count} null values")
+                cleaning_report["actions_taken"].append(f"Filled '{col}' nulls with '{fill_val}'")
+    
+    # 4. Remove duplicate rows
+    duplicates = df.duplicated().sum()
+    if duplicates > 0:
+        df = df.drop_duplicates()
+        cleaning_report["issues_found"].append(f"{duplicates} duplicate rows")
+        cleaning_report["actions_taken"].append(f"Removed {duplicates} duplicate rows")
+    
+    # 5. Strip whitespace from string columns
+    string_cols = df.select_dtypes(include=['object']).columns
+    for col in string_cols:
+        df[col] = df[col].astype(str).str.strip()
+        # Replace empty strings with NaN then forward fill or drop
+        df[col] = df[col].replace(['', 'nan', 'None', 'NaN', 'null'], pd.NA)
+    
+    # 6. Remove rows with remaining nulls (if any)
+    remaining_nulls = df.isnull().sum().sum()
+    if remaining_nulls > 0:
+        rows_before = len(df)
+        df = df.dropna()
+        rows_removed = rows_before - len(df)
+        if rows_removed > 0:
+            cleaning_report["issues_found"].append(f"{rows_removed} rows with remaining nulls")
+            cleaning_report["actions_taken"].append(f"Removed {rows_removed} rows with remaining nulls")
+    
+    # 7. Standardize column names (remove special chars, lowercase)
+    original_cols = df.columns.tolist()
+    df.columns = df.columns.str.strip().str.replace(r'[^\w\s]', '', regex=True).str.replace(' ', '_')
+    
+    cleaning_report["final_rows"] = len(df)
+    cleaning_report["final_columns"] = len(df.columns)
+    cleaning_report["rows_removed"] = cleaning_report["original_rows"] - cleaning_report["final_rows"]
+    cleaning_report["data_quality_score"] = round((cleaning_report["final_rows"] / max(cleaning_report["original_rows"], 1)) * 100, 1)
+    
+    if not cleaning_report["issues_found"]:
+        cleaning_report["issues_found"].append("No data quality issues found")
+        cleaning_report["actions_taken"].append("Data was already clean")
+    
+    return df, cleaning_report
+
+
 def get_file_preview(df: pd.DataFrame, max_rows: int = 50) -> str:
     """Get a preview of the dataframe as string for LLM analysis"""
     preview = df.head(max_rows).to_csv(index=False)

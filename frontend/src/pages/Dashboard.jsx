@@ -336,6 +336,7 @@ export default function Dashboard({ session, loading, refreshSession }) {
   const [chatMessage, setChatMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const chatEndRef = useRef(null);
 
   const analysisId = searchParams.get("analysis");

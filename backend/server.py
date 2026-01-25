@@ -552,15 +552,6 @@ async def generate_pdf_report(analysis_id: str):
         borderPadding=5
     )
     
-    subheading_style = ParagraphStyle(
-        'CustomSubheading',
-        parent=styles['Heading3'],
-        fontSize=12,
-        spaceBefore=15,
-        spaceAfter=8,
-        textColor=colors.HexColor('#374151')
-    )
-    
     body_style = ParagraphStyle(
         'CustomBody',
         parent=styles['Normal'],
@@ -568,21 +559,6 @@ async def generate_pdf_report(analysis_id: str):
         spaceAfter=10,
         alignment=TA_JUSTIFY,
         leading=14
-    )
-    
-    metric_name_style = ParagraphStyle(
-        'MetricName',
-        parent=styles['Normal'],
-        fontSize=9,
-        textColor=colors.HexColor('#64748b')
-    )
-    
-    metric_value_style = ParagraphStyle(
-        'MetricValue',
-        parent=styles['Normal'],
-        fontSize=14,
-        fontName='Helvetica-Bold',
-        textColor=colors.HexColor('#0f172a')
     )
     
     # Build content

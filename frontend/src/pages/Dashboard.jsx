@@ -60,6 +60,9 @@ import {
   Table2,
   LineChart as LineChartIcon,
   FileDown,
+  Sparkle,
+  Trash2,
+  Shield,
 } from "lucide-react";
 
 // Light mode chart colors

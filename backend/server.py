@@ -502,9 +502,15 @@ async def analyze_data(request: AnalyzeRequest):
     
     # Store in database
     await db.analyses.insert_one(analysis_doc)
+    
+    # Clear previous chat history for new analysis
     await db.sessions.update_one(
         {"session_id": request.session_id},
-        {"$push": {"analyses": {"analysis_id": analysis_id, "created_at": analysis_doc["created_at"]}}}
+        {
+            "$push": {"analyses": {"analysis_id": analysis_id, "created_at": analysis_doc["created_at"]}},
+            "$set": {"chat_history": []}  # Clear chat history for new analysis
+        }
+    )
     )
     
     return AnalysisResponse(**{k: v for k, v in analysis_doc.items() if k != '_id'})
